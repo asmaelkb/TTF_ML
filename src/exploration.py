@@ -17,4 +17,5 @@ for index, line in full.iterrows():
         # print(line['PC.PMO.DULG-DP-B.DCS.CGCE_CSDP:B_PZALL2453D.CIN'])
         # print(line['PC.PMO.DULG-DP-B.DCS.CGCE_CSDP:B_PZALL24531.CIN'])
         # print(line['PC.PMO.DULG-DP-B.DCS.CSDP_CGCE:SPZALL2453.PNT'])
+        
 
