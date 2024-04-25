@@ -36,7 +36,6 @@ if __name__ == "__main__":
     print(failure_dates)
     common_sensors = common(dfc, critical)
 
-    # Takes too long to run : to fix
     for sensor in common_sensors:           # Browse the list of common_sensors
         for date in dfc['Time']:     # For each sensor, look at its value for all time
             
@@ -55,6 +54,9 @@ if __name__ == "__main__":
 
                     if value < MIN or value > MAX:      # If its value is out of range -> remove the cell
                         dfc.loc[dfc['Time'] == date, sensor] = np.nan
+
+    
+    dfc.to_csv('../data/Cleaned2-CGCE-2019-PivotHourCombined.csv')
 
 
                 
