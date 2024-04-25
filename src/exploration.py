@@ -16,6 +16,15 @@ def limit_values(sensor, n, critical):
 
     return MIN, MAX
 
+def common(cgce, critical):
+    res = []
+    for index, line in critical.iterrows():
+        sensor = line['Tag']
+        if sensor in cgce.columns:
+            res.append(sensor)
+
+    return res
+
 if __name__ == "__main__":
 
     # Retrieve the dataframes of each dataset
@@ -24,38 +33,28 @@ if __name__ == "__main__":
     critical = pd.read_csv('../data/Critical_Tag.csv')
     failure_date = pd.read_csv('../data/Failure_date.csv')
 
-    # Retrieve manually the name of the sensor that is causing the shutdown
 
-    x = []
-    y = []
+    # Displays sensors that are out of their allowed value range
 
-    sensor = 'PC.PMO.DULG-DP-B.DCS.CSDP_CGCE:PZT2468_EN.PNT'
-    date = '2019-05-18'
+    date = '2019-05-18 07:00:00'
+    common_sensors = common(df, critical)
 
-    # For each hour in a day
-    for i in range(2, 24): # 2-hours delay
-        dateh = date + ' ' + str(i).zfill(2) + ':00:00'
-        x.append(str(i).zfill(2) + ':00')
-        index, value = df.loc[df['Time'] == dateh, sensor]
-        y.append(value)
+    print(date)
 
-    # Retrieve the limit values ​​(values ​​from which the equipment shuts down) of each sensor
-    MIN, MAX = limit_values(sensor, len(x), critical)
+    for sensor in common_sensors:
+        _, value = df.loc[df['Time'] == date, sensor]
 
-    x_num = np.arange(len(x))
+        upper =  critical.loc[critical['Tag'] == sensor, 'Upper Limit']
+        upper = int(upper.iloc[0])
 
-    fig, ax1 = plt.subplots()
-    ax1.set_xlabel('X')
-    ax1.set_ylabel('Y')
-    ax1.plot(x, y, color='tab:red')
-    ax1.plot(x, MIN, color='tab:blue')
-    ax1.plot(x, MAX, color='tab:green')
-    plt.xticks(x[::5])  # Print every 5th hour
-    ax1.tick_params(axis='y')
-    plt.title("Variation of the sensor responsible of the shutdown of " + date)
+        lower = critical.loc[critical['Tag'] == sensor, 'Low Limit']
+        lower = int(lower.iloc[0])
 
+        if value > upper or value < lower:
 
-    # Display
-    fig.tight_layout()
-    plt.savefig(date + ".png")
+            print("Value : ", int(value))
+            print("Upper : ", upper)
+            print("Lower : ", lower)
+
+            print(sensor)
 
