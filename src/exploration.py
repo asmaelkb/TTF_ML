@@ -4,19 +4,9 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 
-def limit_values(sensor, n, critical):
-    # Search for the minimum value for this specific sensor, in the critical csv
-    min_val = critical.loc[critical['Tag'] == sensor, 'Low Limit']
-    max_val = critical.loc[critical['Tag'] == sensor, 'Upper Limit']
-    
-    print(min_val, max_val)
-
-    MIN = n * [min_val]
-    MAX = n * [max_val]
-
-    return MIN, MAX
 
 def common(cgce, critical):
+    """ Returns the common sensors between the CGCE and Critical Tag csv files. """
     res = []
     for index, line in critical.iterrows():
         sensor = line['Tag']

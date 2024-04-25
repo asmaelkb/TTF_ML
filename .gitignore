@@ -1,3 +1,4 @@
 data/*
 venv/*
 plot.py
+__pycache__/*
