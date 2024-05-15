@@ -2,3 +2,4 @@ data/*
 venv/*
 plot.py
 __pycache__/*
+src/cat/*
