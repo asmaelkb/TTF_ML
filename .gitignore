@@ -3,3 +3,4 @@ venv/*
 plot.py
 __pycache__/*
 src/cat/*
+src/results/correlation.csv
